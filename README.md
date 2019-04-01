@@ -33,7 +33,7 @@
 ## 2
 1. 单例模式 懒汉式、饿汉式、双重校验锁、静态加载，内部类加载、枚举类加载。保证一个类仅有一个实例，并提供一个访问它的全局访问点。
 
-答:懒汉模式:要的时候才生产.恶汉模式: 一来就有了.  双重检查锁+volatile,静态加载:设置成静态属性. 内部类加载: 里面有个静态内部类静态方法,加载的时候创建
+	答:懒汉模式:要的时候才生产.恶汉模式: 一来就有了.  双重检查锁+volatile,静态加载:设置成静态属性. 内部类加载: 里面有个静态内部类静态方法,加载的时候创建
 
 '''
 public class Singleton
@@ -79,10 +79,22 @@ public class Singleton
 11. 什么时候使用Hashmap
 12. Arrays.sort的实现
 13. 什么时候使用CopyOnArrayList
+	 答:适用场景:读多写少,数据最终一致性。
+	 缺点:
+	  1. CopyOnWrite容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，马上能读到，请不要使用CopyOnWrite容器。
+	  2.  因为CopyOnWrite的写时复制机制，所以在进行写操作的时候，内存里会同时驻扎两个对象的内存，旧的对象和新写入的对象（注意:在复制的时候只是复制容器里的引用，只是在写的时候会创建新对象添加到新容器里，而旧容器的对象还在使用，所以有两份对象内存）。如果这些对象占用的内存比较大，比如说200M左右，那么再写入100M数据进去，内存就会占用300M，那么这个时候很有可能造成频繁的Yong GC和Full GC。之前我们系统中使用了一个服务由于每晚使用CopyOnWrite机制更新大对象，造成了每晚15秒的Full GC，应用响应时间也随之变长。
+	3. 优点:CopyOnWrite容器即写时复制的容器。通俗的理解是当我们往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。这样做的好处是我们可以对CopyOnWrite容器进行并发的读，而不需要加锁，因为当前容器不会添加任何元素。所以CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器。
 14. volatile的使用
+     + 可见性
+     + 禁止重排序     
 15. synchronied的使用
+		+ 偏向锁->轻量锁->重量锁 
 16. reentrantlock的实现和Synchronied的区别
+     + reentrantlock 基于aqs框架(底层算法clh队列),java 语言级别可重入锁实现
+     +  Synchronied 编译器级别实现, bytecode monitorenter monitor exit
+        
 17. CAS的实现原理以及问题
+      + compare and swap 需要cpu底层指令支持cas 算法,天然原子性, 方便无锁编程
 18. 双亲委派模型
 19. 类加载机制的步骤，每一步做了什么，static和final修改的成员变量的加载时机
 20. 反射机制：反射动态擦除泛型、反射动态调用方法等
@@ -120,14 +132,45 @@ public class Singleton
 35. ActiveMQ、RabbitMQ、Kafka的区别
 36. 多个线程同时读写，读线程的数量远远大于写线程，你认为应该如何解决并发的问题？你会选择加什么样的锁？
 37. Tomcat本身的参数你⼀一般会怎么调整？
+答:export JAVA_OPTS=""-Dfile.encoding=UTF-8 -server -Xms1400M -Xmx1400M -Xss512k
+-XX:+AggressiveOpts
+-XX:+UseBiasedLocking -XX:PermSize=128M -XX:MaxPermSize=256M
+-XX:+DisableExplicitGC -XX:MaxTenuringThreshold=30 -XX:+UseConcMarkSweepGC
+-XX:+UseParNewGC  -XX:+CMSParallelRemarkEnabled -XX:ReservedCodeCacheSize=32m
+-XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m 
+-XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly
+-Djava.awt.headless=true"
+ + server 意味着是已真正的生产环境来运行
+ + 初始大小和最大大小一致
+ + 使用偏向锁,有时候可以禁用,可重入底层jvm
+ + DisableExplicitGC 严禁代码显式gc
+ + MaxTenuringThreshold这个参数用于节制对象能履历几多次Minor GC才提升到旧生代，默许值是15，
+ + UseConcMarkSweepGC  使每次停顿尽量短, UseParNewGC 新生代并行收集
+ + 
+ + 
+
+
+
+
+
 38. 线程池内的线程如果全部忙，提交一个新的任务，会发生什什么？队列全部塞满了之后，还是忙，再提交会发生什么？
 39. wait/notify/notifyAll方法需不需要被包含在synchronized块中？这是为什么？
+	答:需要,因为wait notify, notifyAll 都是等待条件发生,或者条件已经改变,可以通知,如果没有的话,可能引起race condition, 先验判断失效,毫无意义.
+	
+
 40. ExecutorService你一般是怎么用的？是每个service放一个还是一个项目里面放一个？有什么好处？
+    答:参考java并发编程实战所说,最好是一类任务放一个线程池,不然会造成业务耦合或者死锁,饥饿
+    
 41. Spring的声明式事务 @Transaction注解一般写在什么位置? 抛出了异常会自动回滚吗？有没有办法控制不触发回滚?
 42. 你们的数据库单表数据量是多少？一般多大的时候开始出现查询性能急剧下降？
 43. Perm Space中保存什么数据? 会引起OutOfMemory吗？
+    perm space 主要PermSpace主要是存放静态的类信息和方法信息，静态的方法和变量，final标注的常量信息等。
+    一般两种情况爆: 1.一直搞新字符串 intern() ,爆常量池.
+    				2.cglib 搞出很多新类出来.爆
+    				
 44. Linux下面如果想看某个进程的资源占用情况是怎么看的？系统load大概指的什么意思？你们线上系统load一般多少？如果一个4核机器，你认为多少load是比较正常的？top命令里面按一下1会发生什么?
 45. 查看网络连接发现好多TIMEWAIT 可能是什么原因？对你的应用会有什么影响？你会选择什么样的方式来减少这些TIMEWAIT
+ 答: <a href=https://www.cnblogs.com/softidea/p/5741192.html><a/>
 46. 可否介绍一下TCP三次握手的过程，如果现在有个网络程序，你用第三方的library来发送数据，你怀疑这个library发送的数据有问题，那么怎么来验证？tcpdump导出的文件你一般是怎么分析的？
 47. 缓存穿透可以介绍一下么？你认为应该如何解决这个问题?
 48. .你是怎么触发缓存更新的？(比如设置超时时间(被动方式), 比如更新的时候主动update)？如果是被动的方式如何控制多个入口同时触发某个缓存更新？
