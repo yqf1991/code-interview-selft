@@ -110,15 +110,14 @@ public class Singleton
 30. reactor模型的演变
 31. linux命令，awk、sed,cat、sort、cut、grep、uniq、wc、top等
 
-答:
-1. 命令grep，更适合单纯的查找或匹配文本, 
-2. awk 格式化文本逐行处理,begin {} end{}
-3. sort 用来给文本的行排序 
-4. cut 略
-5. grep 搜搜文本 -r 级联 -n 行号 --color 标红   -o 只显示匹配词 
-6. wc -l 行数 -c 统计字节数。 -m 统计字符数    -w 统计字数。
-7. top  性能必备
-8. 
+	1. 命令grep，更适合单纯的查找或匹配文本, 
+	2. awk 格式化文本逐行处理,begin {} end{}
+	3. sort 用来给文本的行排序 
+	4. cut 略
+	5. grep 搜搜文本 -r 级联 -n 行号 --color 标红   -o 只显示匹配词 
+	6. wc -l 行数 -c 统计字节数。 -m 统计字符数    -w 统计字数。
+	7. top  性能必备
+ 
 
 
 
@@ -131,6 +130,9 @@ public class Singleton
 34. 缓存和数据库一致性同步解决方案
 35. ActiveMQ、RabbitMQ、Kafka的区别
 36. 多个线程同时读写，读线程的数量远远大于写线程，你认为应该如何解决并发的问题？你会选择加什么样的锁？
+     1. 读写锁
+
+
 37. Tomcat本身的参数你⼀一般会怎么调整？
 答:export JAVA_OPTS=""-Dfile.encoding=UTF-8 -server -Xms1400M -Xmx1400M -Xss512k
 -XX:+AggressiveOpts
@@ -154,6 +156,8 @@ public class Singleton
 
 
 38. 线程池内的线程如果全部忙，提交一个新的任务，会发生什什么？队列全部塞满了之后，还是忙，再提交会发生什么？
+39. aba问题?
+    + StampedLock
 39. wait/notify/notifyAll方法需不需要被包含在synchronized块中？这是为什么？
 	答:需要,因为wait notify, notifyAll 都是等待条件发生,或者条件已经改变,可以通知,如果没有的话,可能引起race condition, 先验判断失效,毫无意义.
 	
@@ -201,6 +205,14 @@ Java BIO ： 同步并阻塞，服务器实现模式为一个连接一个线程�
 
 Java NIO ： 同步非阻塞，服务器实现模式为一个请求一个线程，即客户端发送的连接请求都会注册到多路复用器上，多路复用器轮询到连接有I/O请求时才启动一个线程进行处理。（底层是epoll）
 Java AIO(NIO.2) ： 异步非阻塞，服务器实现模式为一个有效请求一个线程，客户端的I/O请求都是由OS先完成了再通知服务器应用去启动线程进行处理
+
+2. 排序算法
+  ![](https://img-blog.csdn.net/20180807094112221?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzM3OTYyNjAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+  单轴点快速排序: 
+  + 交换指针法
+  + 挖坑
+  + 双轴点快速排序,java内部采用 arrays 工具方法碰到基本类型 喜欢这种算法,原因是不容易试算法变得不稳定的哦o(n^2),因为是基本类型所以,原地置换位置,方便的很
+   
 
 
 
