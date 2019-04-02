@@ -29,6 +29,10 @@
 14. 分布式事务一致性
 15. HTTP2.0、thrift
 16. 微信红包怎么实现。
+ 答: 
+ [红包架构高可用](https://mp.weixin.qq.com/s?__biz=MjM5MDE0Mjc4MA==&mid=2650996535&idx=1&sn=95f32730f45cae1bce23ee796b0277c1&chksm=bdbf07648ac88e7289bd08ab3c0a566f4983342bc1c22799d454bef0d1641dae812f3eb84880&scene=27#wechat_redirect)
+ 
+ [红包具体步骤](https://mp.weixin.qq.com/s?__biz=MjM5MDE0Mjc4MA==&mid=2650995437&idx=1&sn=fefff4bff3e183d656a2d242e4c0a382&chksm=bdbf02be8ac88ba8d77252cf0279d708633364589a3c14e4e08fbe49e02dcf7ecfac50f141fe&scene=27#wechat_redirect)
 
 ## 2
 1. 单例模式 懒汉式、饿汉式、双重校验锁、静态加载，内部类加载、枚举类加载。保证一个类仅有一个实例，并提供一个访问它的全局访问点。
