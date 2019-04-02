@@ -35,32 +35,20 @@
 
 	答:懒汉模式:要的时候才生产.恶汉模式: 一来就有了.  双重检查锁+volatile,静态加载:设置成静态属性. 内部类加载: 里面有个静态内部类静态方法,加载的时候创建
 
-'''
+```java
 public class Singleton
 {
     private Singleton(){}
-    
-    static {
-        System.out.println("This's static code block!");
-    }
-    
     private static class SingletonHandler {
         private static Singleton singleton = new Singleton();
-        static {
-            System.out.println("This's innerClass's static code block");
-        }
+      
     }
-    
     public static Singleton getInstance(){
         return SingletonHandler.singleton;
     }
-    
-    public static void display(){
-        System.out.println("This's display!");
-    }
 }
 
-'''
+```
 
 2. 代理模式：动态代理和静态代理，什么时候使用动态代理。
 
@@ -180,11 +168,35 @@ public class Singleton
 		 1. 要留一段时间,怕下一个链接被上一个关闭连接留存在网络又出现的包打乱了连接.
 		 2.  可能被动关闭方没收到 ack,这个时候他会再发fin,但是如果 主动方直接关闭的话, 被动方收到的就是rst 而不是 ack.
 46. 可否介绍一下TCP三次握手的过程，如果现在有个网络程序，你用第三方的library来发送数据，你怀疑这个library发送的数据有问题，那么怎么来验证？tcpdump导出的文件你一般是怎么分析的？
-47. 缓存穿透可以介绍一下么？你认为应该如何解决这个问题?
+47. 缓存穿透,缓存击穿,缓存雪崩,可以介绍一下么？你认为应该如何解决这个问题?
+	1. 缓存穿透:每次都回源,因为不存在,
+		1. 对请求id做检验
+		2. 缓存null val;设置缓存过期时间短一点.
+	2.  缓存击穿:单个热点key过期,导致回源压力剧增.数据库周期性压力大.
+	   1. lock锁,单点回源,其他休眠自旋回调
+	     ![](https://img-blog.csdn.net/20180919143214879?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2tvbmd0aWFvNQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+	   2. 热点数据设置缓存时间无限.除非去替换他.
+	3.  缓存雪崩: 大量key一瞬间过期,导致源压力剧增
+	    1. 缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。
+	    2. 如果缓存数据库是分布式部署，将热点数据shuffle均匀分布在不同搞得缓存数据库中。
+	    3. 设置热点数据永远不过期。
+	   
+		
+
 48. .你是怎么触发缓存更新的？(比如设置超时时间(被动方式), 比如更新的时候主动update)？如果是被动的方式如何控制多个入口同时触发某个缓存更新？
 49. 你们用Redis来做什么？为什么不用其他的KV存储例例如Memcached,Cassandra等?
 50. 你熟悉哪些Redis的数据结构? zset是干什么的? 和set有什么区别?
 51. .Redis中List, HashTable都用到了ZipList, 为什么会选择它?
+52. cap 理论
+    答:c consistence 一致性, a avaiable 可用,  p 分区容错.  分布式环境 一般 都p, 当网络分区的时候,修改一个副本,导致 另一个副本没能保持一致,为了保持强一致,就得牺牲可用,在副本没有拷贝成功之前不可用. 或者为了可用,牺牲一致性,但是保证,最终还可以可用同步过去.
+    
+    
+53. base 理论
+    ba,基本可用.
+    s, 软状态,中间状态,允许中间状态,业务. 
+    e,最终一致性
+54. 分布式事务
+     
 
 
 
