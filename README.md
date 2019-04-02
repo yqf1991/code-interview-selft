@@ -175,7 +175,10 @@ public class Singleton
     				
 44. Linux下面如果想看某个进程的资源占用情况是怎么看的？系统load大概指的什么意思？你们线上系统load一般多少？如果一个4核机器，你认为多少load是比较正常的？top命令里面按一下1会发生什么?
 45. 查看网络连接发现好多TIMEWAIT 可能是什么原因？对你的应用会有什么影响？你会选择什么样的方式来减少这些TIMEWAIT
- 答: <a href=https://www.cnblogs.com/softidea/p/5741192.html><a/>
+ 答: [timewait的一篇解释](https://www.cnblogs.com/softidea/p/5741192.html)
+ timewait 是主动方收到fin, 开始会等待的,一般等待2个msl(Maximum Segment Lifetime,一般指一个tcp在网络生存的的最久周期), 有2个原因:
+		 1. 要留一段时间,怕下一个链接被上一个关闭连接留存在网络又出现的包打乱了连接.
+		 2.  可能被动关闭方没收到 ack,这个时候他会再发fin,但是如果 主动方直接关闭的话, 被动方收到的就是rst 而不是 ack.
 46. 可否介绍一下TCP三次握手的过程，如果现在有个网络程序，你用第三方的library来发送数据，你怀疑这个library发送的数据有问题，那么怎么来验证？tcpdump导出的文件你一般是怎么分析的？
 47. 缓存穿透可以介绍一下么？你认为应该如何解决这个问题?
 48. .你是怎么触发缓存更新的？(比如设置超时时间(被动方式), 比如更新的时候主动update)？如果是被动的方式如何控制多个入口同时触发某个缓存更新？
@@ -208,6 +211,7 @@ Java NIO ： 同步非阻塞，服务器实现模式为一个请求一个线程�
 Java AIO(NIO.2) ： 异步非阻塞，服务器实现模式为一个有效请求一个线程，客户端的I/O请求都是由OS先完成了再通知服务器应用去启动线程进行处理
 
 2. 排序算法
+
   ![](https://img-blog.csdn.net/20180807094112221?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzM3OTYyNjAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
   单轴点快速排序: 
   + 交换指针法
