@@ -110,13 +110,14 @@ public class Singleton
 30. reactor模型的演变
 31. linux命令，awk、sed,cat、sort、cut、grep、uniq、wc、top等
 
-	1. 命令grep，更适合单纯的查找或匹配文本, 
+	1. 命令grep，更适合单纯的查找或匹配文本, grep -o  --color 'yipeng_test_[0-9|_|a-z]*'  sss.log |uniq  grep 意思是只匹配单词,匹配显示颜色,后面是正则, uniq 是去重
 	2. awk 格式化文本逐行处理,begin {} end{}
 	3. sort 用来给文本的行排序 
 	4. cut 略
 	5. grep 搜搜文本 -r 级联 -n 行号 --color 标红   -o 只显示匹配词 
 	6. wc -l 行数 -c 统计字节数。 -m 统计字符数    -w 统计字数。
 	7. top  性能必备
+	8. uniq -c  去重统计计数
  
 
 
