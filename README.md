@@ -239,7 +239,16 @@ Java AIO(NIO.2) ： 异步非阻塞，服务器实现模式为一个有效请求
   + 直接插入排序,数目少时候很有效. 打扑克牌
   + shell 排序就是加强版的插入排序,只是插入排序要一个个的移动,shell可以跳跃移动
   + 堆排序 利用了 最大堆,可以sink和swim 保持依次取最大的头,变态版选择排序
-  + 
+  
+  
+  
+  
+  2. 在一个文件中有10G个整数，乱序排列，要求找出中位数
+  
+  		[解答](https://www.cnblogs.com/wuchanming/p/4342784.html)
+  3. utf-8 unicode asc 码 bigdian littledian 
+     
+      [mark说的清楚](https://blog.csdn.net/Deft_MKJing/article/details/79460485)
    
 
 
