@@ -246,10 +246,16 @@ Java AIO(NIO.2) ： 异步非阻塞，服务器实现模式为一个有效请求
   2. 在一个文件中有10G个整数，乱序排列，要求找出中位数
   
   		[解答](https://www.cnblogs.com/wuchanming/p/4342784.html)
-  3. utf-8 unicode asc 码 bigdian littledian 
+  3. utf-8 unicode asc 码 big endian little endian 
      
       [mark说的清楚](https://blog.csdn.net/Deft_MKJing/article/details/79460485)
-   
+      
+      
+  4.  https的具体流程的资料?
+     
+     + [wireshark调试,用百度的典型例子说说](https://blog.csdn.net/u013604679/article/details/53054353)
+     + [全过程https,tls为什么这么通信,前因后果](https://www.cnblogs.com/zhangshitong/p/6478721.html)
+     + [具体的tls/ssl 流程,此中文说的不错](https://blog.csdn.net/ustccw/article/details/76691248) 
 
 
 
