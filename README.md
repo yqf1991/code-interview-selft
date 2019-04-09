@@ -253,9 +253,9 @@ Java AIO(NIO.2) ： 异步非阻塞，服务器实现模式为一个有效请求
       
   4.  https的具体流程的资料?
      
-     + [wireshark调试,用百度的典型例子说说](https://blog.csdn.net/u013604679/article/details/53054353)
-     + [全过程https,tls为什么这么通信,前因后果](https://www.cnblogs.com/zhangshitong/p/6478721.html)
-     +  [具体的tls/ssl 流程,此中文说的不错](https://blog.csdn.net/ustccw/article/details/76691248) 
+     * [wireshark调试,用百度的典型例子说说](https://blog.csdn.net/u013604679/article/details/53054353)
+     * [全过程https,tls为什么这么通信,前因后果](https://www.cnblogs.com/zhangshitong/p/6478721.html)
+     *  [具体的tls/ssl 流程,此中文说的不错](https://blog.csdn.net/ustccw/article/details/76691248) 
 
 
 
