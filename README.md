@@ -1,17 +1,17 @@
 # code-interview-selft
+
 给自己找工作用的
 
-
 ## 微服务
-###dubbo
+
+### dubbo
+
 1.dubbo如何一条链接并发多个调用。Dubbo的原理，序列化相关问题。
 
-###spring boot 相关面试题
-
-
-
+### spring boot 相关面试题
 
 ## 1
+
 1. 线程池的一些原理，锁的机制升降级
 2. Hadoop底层调度
 3. threadLocal 底层
@@ -29,15 +29,16 @@
 14. 分布式事务一致性
 15. HTTP2.0、thrift
 16. 微信红包怎么实现。
- 答: 
+ 答:
  [红包架构高可用](https://mp.weixin.qq.com/s?__biz=MjM5MDE0Mjc4MA==&mid=2650996535&idx=1&sn=95f32730f45cae1bce23ee796b0277c1&chksm=bdbf07648ac88e7289bd08ab3c0a566f4983342bc1c22799d454bef0d1641dae812f3eb84880&scene=27#wechat_redirect)
- 
+
  [红包具体步骤](https://mp.weixin.qq.com/s?__biz=MjM5MDE0Mjc4MA==&mid=2650995437&idx=1&sn=fefff4bff3e183d656a2d242e4c0a382&chksm=bdbf02be8ac88ba8d77252cf0279d708633364589a3c14e4e08fbe49e02dcf7ecfac50f141fe&scene=27#wechat_redirect)
 
 ## 2
+
 1. 单例模式 懒汉式、饿汉式、双重校验锁、静态加载，内部类加载、枚举类加载。保证一个类仅有一个实例，并提供一个访问它的全局访问点。
 
-	答:懒汉模式:要的时候才生产.恶汉模式: 一来就有了.  双重检查锁+volatile,静态加载:设置成静态属性. 内部类加载: 里面有个静态内部类静态方法,加载的时候创建
+ 答:懒汉模式:要的时候才生产.恶汉模式: 一来就有了.  双重检查锁+volatile,静态加载:设置成静态属性. 内部类加载: 里面有个静态内部类静态方法,加载的时候创建
 
 ```java
 public class Singleton
@@ -58,8 +59,6 @@ public class Singleton
 
 |||
 
-
-
 3. 装饰者模式：动态给类加功能。
 4. 观察者模式：有时被称作发布/订阅模式，观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态发生变化时，会通知所有观察者对象，使它们能够自动更新自己。
 5. 策略模式：定义一系列的算法,把它们一个个封装起来, 并且使它们可相互替换。
@@ -71,20 +70,22 @@ public class Singleton
 11. 什么时候使用Hashmap
 12. Arrays.sort的实现
 13. 什么时候使用CopyOnArrayList
-	 答:适用场景:读多写少,数据最终一致性。
-	 缺点:
-	  1. CopyOnWrite容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，马上能读到，请不要使用CopyOnWrite容器。
-	  2.  因为CopyOnWrite的写时复制机制，所以在进行写操作的时候，内存里会同时驻扎两个对象的内存，旧的对象和新写入的对象（注意:在复制的时候只是复制容器里的引用，只是在写的时候会创建新对象添加到新容器里，而旧容器的对象还在使用，所以有两份对象内存）。如果这些对象占用的内存比较大，比如说200M左右，那么再写入100M数据进去，内存就会占用300M，那么这个时候很有可能造成频繁的Yong GC和Full GC。之前我们系统中使用了一个服务由于每晚使用CopyOnWrite机制更新大对象，造成了每晚15秒的Full GC，应用响应时间也随之变长。
-	3. 优点:CopyOnWrite容器即写时复制的容器。通俗的理解是当我们往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。这样做的好处是我们可以对CopyOnWrite容器进行并发的读，而不需要加锁，因为当前容器不会添加任何元素。所以CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器。
+  答:适用场景:读多写少,数据最终一致性。
+  缺点:
+1. CopyOnWrite容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，马上能读到，请不要使用CopyOnWrite容器。
+2. 因为CopyOnWrite的写时复制机制，所以在进行写操作的时候，内存里会同时驻扎两个对象的内存，旧的对象和新写入的对象（注意:在复制的时候只是复制容器里的引用，只是在写的时候会创建新对象添加到新容器里，而旧容器的对象还在使用，所以有两份对象内存）。如果这些对象占用的内存比较大，比如说200M左右，那么再写入100M数据进去，内存就会占用300M，那么这个时候很有可能造成频繁的Yong GC和Full GC。之前我们系统中使用了一个服务由于每晚使用CopyOnWrite机制更新大对象，造成了每晚15秒的Full GC，应用响应时间也随之变长。
+3. 优点:CopyOnWrite容器即写时复制的容器。通俗的理解是当我们往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。这样做的好处是我们可以对CopyOnWrite容器进行并发的读，而不需要加锁，因为当前容器不会添加任何元素。所以CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器。
 14. volatile的使用
      + 可见性
-     + 禁止重排序     
+     + 禁止重排序
 15. synchronied的使用
-		+ 偏向锁->轻量锁->重量锁 
+
++ 偏向锁->轻量锁->重量锁
+
 16. reentrantlock的实现和Synchronied的区别
      + reentrantlock 基于aqs框架(底层算法clh队列),java 语言级别可重入锁实现
-     +  Synchronied 编译器级别实现, bytecode monitorenter monitor exit
-        
+     + Synchronied 编译器级别实现, bytecode monitorenter monitor exit
+
 17. CAS的实现原理以及问题
       + compare and swap 需要cpu底层指令支持cas 算法,天然原子性, 方便无锁编程
 18. 双亲委派模型
@@ -102,21 +103,14 @@ public class Singleton
 30. reactor模型的演变
 31. linux命令，awk、sed,cat、sort、cut、grep、uniq、wc、top等
 
-	1. 命令grep，更适合单纯的查找或匹配文本, grep -o  --color 'yipeng_test_[0-9|_|a-z]*'  sss.log |uniq  grep 意思是只匹配单词,匹配显示颜色,后面是正则, uniq 是去重
-	2. awk 格式化文本逐行处理,begin {} end{}
-	3. sort 用来给文本的行排序 
-	4. cut 略
-	5. grep 搜搜文本 -r 级联 -n 行号 --color 标红   -o 只显示匹配词 
-	6. wc -l 行数 -c 统计字节数。 -m 统计字符数    -w 统计字数。
-	7. top  性能必备
-	8. uniq -c  去重统计计数
- 
-
-
-
-
-
-
+ 1. 命令grep，更适合单纯的查找或匹配文本, grep -o  --color 'yipeng_test_[0-9|_|a-z]*'  sss.log |uniq  grep 意思是只匹配单词,匹配显示颜色,后面是正则, uniq 是去重
+ 2. awk 格式化文本逐行处理,begin {} end{}
+ 3. sort 用来给文本的行排序
+ 4. cut 略
+ 5. grep 搜搜文本 -r 级联 -n 行号 --color 标红   -o 只显示匹配词
+ 6. wc -l 行数 -c 统计字节数。 -m 统计字符数    -w 统计字数。
+ 7. top  性能必备
+ 8. uniq -c  去重统计计数
 
 32. 压力测试相关，怎么分析，单接口压测和多情况下的压测
 33. 缓存的设计和优化
@@ -125,67 +119,61 @@ public class Singleton
 36. 多个线程同时读写，读线程的数量远远大于写线程，你认为应该如何解决并发的问题？你会选择加什么样的锁？
      1. 读写锁
 
-
 37. Tomcat本身的参数你⼀一般会怎么调整？
 答:export JAVA_OPTS=""-Dfile.encoding=UTF-8 -server -Xms1400M -Xmx1400M -Xss512k
 -XX:+AggressiveOpts
 -XX:+UseBiasedLocking -XX:PermSize=128M -XX:MaxPermSize=256M
 -XX:+DisableExplicitGC -XX:MaxTenuringThreshold=30 -XX:+UseConcMarkSweepGC
 -XX:+UseParNewGC  -XX:+CMSParallelRemarkEnabled -XX:ReservedCodeCacheSize=32m
--XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m 
+-XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m
 -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly
 -Djava.awt.headless=true"
- + server 意味着是已真正的生产环境来运行
- + 初始大小和最大大小一致
- + 使用偏向锁,有时候可以禁用,可重入底层jvm
- + DisableExplicitGC 严禁代码显式gc
- + MaxTenuringThreshold这个参数用于节制对象能履历几多次Minor GC才提升到旧生代，默许值是15，
- + UseConcMarkSweepGC  使每次停顿尽量短, UseParNewGC 新生代并行收集
- + 
- + 
 
++ server 意味着是已真正的生产环境来运行
++ 初始大小和最大大小一致
++ 使用偏向锁,有时候可以禁用,可重入底层jvm
++ DisableExplicitGC 严禁代码显式gc
++ MaxTenuringThreshold这个参数用于节制对象能履历几多次Minor GC才提升到旧生代，默许值是15，
++ UseConcMarkSweepGC  使每次停顿尽量短, UseParNewGC 新生代并行收集
 
-
-
++
++
 
 38. 线程池内的线程如果全部忙，提交一个新的任务，会发生什什么？队列全部塞满了之后，还是忙，再提交会发生什么？
 39. aba问题?
     + StampedLock
 39. wait/notify/notifyAll方法需不需要被包含在synchronized块中？这是为什么？
-	答:需要,因为wait notify, notifyAll 都是等待条件发生,或者条件已经改变,可以通知,如果没有的话,可能引起race condition, 先验判断失效,毫无意义.
-	
+ 答:需要,因为wait notify, notifyAll 都是等待条件发生,或者条件已经改变,可以通知,如果没有的话,可能引起race condition, 先验判断失效,毫无意义.
 
 40. ExecutorService你一般是怎么用的？是每个service放一个还是一个项目里面放一个？有什么好处？
     答:参考java并发编程实战所说,最好是一类任务放一个线程池,不然会造成业务耦合或者死锁,饥饿
-    
+
 41. Spring的声明式事务 @Transaction注解一般写在什么位置? 抛出了异常会自动回滚吗？有没有办法控制不触发回滚?
 42. 你们的数据库单表数据量是多少？一般多大的时候开始出现查询性能急剧下降？
 43. Perm Space中保存什么数据? 会引起OutOfMemory吗？
     perm space 主要PermSpace主要是存放静态的类信息和方法信息，静态的方法和变量，final标注的常量信息等。
     一般两种情况爆: 1.一直搞新字符串 intern() ,爆常量池.
-    				2.cglib 搞出很多新类出来.爆
-    				
+        2.cglib 搞出很多新类出来.爆
+
 44. Linux下面如果想看某个进程的资源占用情况是怎么看的？系统load大概指的什么意思？你们线上系统load一般多少？如果一个4核机器，你认为多少load是比较正常的？top命令里面按一下1会发生什么?
 45. 查看网络连接发现好多TIMEWAIT 可能是什么原因？对你的应用会有什么影响？你会选择什么样的方式来减少这些TIMEWAIT
  答: [timewait的一篇解释](https://www.cnblogs.com/softidea/p/5741192.html)
  timewait 是主动方收到fin, 开始会等待的,一般等待2个msl(Maximum Segment Lifetime,一般指一个tcp在网络生存的的最久周期), 有2个原因:
-		 1. 要留一段时间,怕下一个链接被上一个关闭连接留存在网络又出现的包打乱了连接.
-		 2.  可能被动关闭方没收到 ack,这个时候他会再发fin,但是如果 主动方直接关闭的话, 被动方收到的就是rst 而不是 ack.
+1. 要留一段时间,怕下一个链接被上一个关闭连接留存在网络又出现的包打乱了连接.
+2. 可能被动关闭方没收到 ack,这个时候他会再发fin,但是如果 主动方直接关闭的话, 被动方收到的就是rst 而不是 ack.
 46. 可否介绍一下TCP三次握手的过程，如果现在有个网络程序，你用第三方的library来发送数据，你怀疑这个library发送的数据有问题，那么怎么来验证？tcpdump导出的文件你一般是怎么分析的？
 47. 缓存穿透,缓存击穿,缓存雪崩,可以介绍一下么？你认为应该如何解决这个问题?
-	1. 缓存穿透:每次都回源,因为不存在,
-		1. 对请求id做检验
-		2. 缓存null val;设置缓存过期时间短一点.
-	2.  缓存击穿:单个热点key过期,导致回源压力剧增.数据库周期性压力大.
-	   1. lock锁,单点回源,其他休眠自旋回调
-	     ![](https://img-blog.csdn.net/20180919143214879?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2tvbmd0aWFvNQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
-	   2. 热点数据设置缓存时间无限.除非去替换他.
-	3.  缓存雪崩: 大量key一瞬间过期,导致源压力剧增
-	    1. 缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。
-	    2. 如果缓存数据库是分布式部署，将热点数据shuffle均匀分布在不同搞得缓存数据库中。
-	    3. 设置热点数据永远不过期。
-	   
-		
+ 1. 缓存穿透:每次都回源,因为不存在,
+ 1. 对请求id做检验
+ 2. 缓存null val;设置缓存过期时间短一点.
+ 2. 缓存击穿:单个热点key过期,导致回源压力剧增.数据库周期性压力大.
+ 1. lock锁,单点回源,其他休眠自旋回调
+      ![](https://img-blog.csdn.net/20180919143214879?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2tvbmd0aWFvNQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+ 2. 热点数据设置缓存时间无限.除非去替换他.
+ 3. 缓存雪崩: 大量key一瞬间过期,导致源压力剧增
+     1. 缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。
+     2. 如果缓存数据库是分布式部署，将热点数据shuffle均匀分布在不同搞得缓存数据库中。
+     3. 设置热点数据永远不过期。
 
 48. .你是怎么触发缓存更新的？(比如设置超时时间(被动方式), 比如更新的时候主动update)？如果是被动的方式如何控制多个入口同时触发某个缓存更新？
 49. 你们用Redis来做什么？为什么不用其他的KV存储例例如Memcached,Cassandra等?
@@ -193,23 +181,20 @@ public class Singleton
 51. .Redis中List, HashTable都用到了ZipList, 为什么会选择它?
 52. cap 理论
     答:c consistence 一致性, a avaiable 可用,  p 分区容错.  分布式环境 一般 都p, 当网络分区的时候,修改一个副本,导致 另一个副本没能保持一致,为了保持强一致,就得牺牲可用,在副本没有拷贝成功之前不可用. 或者为了可用,牺牲一致性,但是保证,最终还可以可用同步过去.
-    
-    
+
 53. base 理论
     ba,基本可用.
-    s, 软状态,中间状态,允许中间状态,业务. 
+    s, 软状态,中间状态,允许中间状态,业务.
     e,最终一致性
 54. 分布式事务
-     
-
-
 
 ## linux底层
-1.  nio的底层实现。
+
+1. nio的底层实现。
  答:Linux的内核将所有外部设备都可以看做一个文件来操作,对一个socket的读写也会有相应的描述符，称为socketfd(socket描述符)
  下图阻塞调用
  ![Alt text](https://img-blog.csdn.net/20150907142335811)
- 
+
  下图非阻塞调用
  ![Alt text](https://img-blog.csdn.net/20150907142428853)
  I/O复用模型
@@ -218,8 +203,8 @@ public class Singleton
  ![Alt text](https://img-blog.csdn.net/20150907142638225)
  异步I/O模型
  ![Alt text](https://img-blog.csdn.net/20150907142720641)
- 
- 前四种都是同步IO，在内核数据copy到用户空间时都是阻塞的。 
+
+ 前四种都是同步IO，在内核数据copy到用户空间时都是阻塞的。
 最后一种是异步IO，通过API把IO操作交由操作系统处理，当前进程不关心具体IO的实现，通过回调函数，或者信号量通知当前进程直接对IO返回结果进行处理。
 Java BIO ： 同步并阻塞，服务器实现模式为一个连接一个线程，即客户端有连接请求时服务器端就需要启动一个线程进行处理，如果这个连接不做任何事情会造成不必要的线程开销，当然可以通过线程池机制改善。
 
@@ -230,36 +215,28 @@ Java AIO(NIO.2) ： 异步非阻塞，服务器实现模式为一个有效请求
 
   ![](https://img-blog.csdn.net/20180807094112221?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzM3OTYyNjAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
   
-  单轴点快速排序: 
-  + 交换指针法
-  + 挖坑
-  + 双轴点快速排序,java内部采用 arrays 工具方法碰到基本类型 喜欢这种算法,原因是不容易试算法变得不稳定的哦o(n^2),因为是基本类型所以,原地置换位置,方便的很,但是用到了堆栈 空间复杂度是log 2 n 
-  + timsort 分成run, 然后归并,归并的时候记得掐头去尾,适当时候还得开舞动模式,如果舞动模式不成功,就回归普通模式,记得入栈,上下依次是xyz,z>y+x 和y>x 要保持,直到最后合并一个run,目的是为了保持每次归并,能够保持合并的2个run接近一样大小,这样就可以接近log 2n ,同时可以利用已经有的顺序,此方法比较优秀
-  + arrays 对引用排序 一般情况下 可选 归并 或者 timsort,未来会移除 归并. 
-  + 直接插入排序,数目少时候很有效. 打扑克牌
-  + shell 排序就是加强版的插入排序,只是插入排序要一个个的移动,shell可以跳跃移动
-  + 堆排序 利用了 最大堆,可以sink和swim 保持依次取最大的头,变态版选择排序
-  
-  
-  
+  单轴点快速排序:
+
++ 交换指针法
++ 挖坑
++ 双轴点快速排序,java内部采用 arrays 工具方法碰到基本类型 喜欢这种算法,原因是不容易试算法变得不稳定的哦o(n^2),因为是基本类型所以,原地置换位置,方便的很,但是用到了堆栈 空间复杂度是log 2 n
++ timsort 分成run, 然后归并,归并的时候记得掐头去尾,适当时候还得开舞动模式,如果舞动模式不成功,就回归普通模式,记得入栈,上下依次是xyz,z>y+x 和y>x 要保持,直到最后合并一个run,目的是为了保持每次归并,能够保持合并的2个run接近一样大小,这样就可以接近log 2n ,同时可以利用已经有的顺序,此方法比较优秀
++ arrays 对引用排序 一般情况下 可选 归并 或者 timsort,未来会移除 归并.
++ 直接插入排序,数目少时候很有效. 打扑克牌
++ shell 排序就是加强版的插入排序,只是插入排序要一个个的移动,shell可以跳跃移动
++ 堆排序 利用了 最大堆,可以sink和swim 保持依次取最大的头,变态版选择排序
   
   2. 在一个文件中有10G个整数，乱序排列，要求找出中位数
   
-  		[解答](https://www.cnblogs.com/wuchanming/p/4342784.html)
-  3. utf-8 unicode asc 码 big endian little endian 
-     
+    [解答](https://www.cnblogs.com/wuchanming/p/4342784.html)
+  3. utf-8 unicode asc 码 big endian little endian
+
       [mark说的清楚](https://blog.csdn.net/Deft_MKJing/article/details/79460485)
-      
-      
-  4.  https的具体流程的资料?
-     
+
+  4. https的具体流程的资料?
+
       [wireshark调试,用百度的典型例子说说](https://blog.csdn.net/u013604679/article/details/53054353)
-      
+
      [全过程https,tls为什么这么通信,前因后果](https://www.cnblogs.com/zhangshitong/p/6478721.html)
-     
-      [具体的tls/ssl 流程,此中文说的不错](https://blog.csdn.net/ustccw/article/details/76691248) 
 
-
-
-
-
+      [具体的tls/ssl 流程,此中文说的不错](https://blog.csdn.net/ustccw/article/details/76691248)
